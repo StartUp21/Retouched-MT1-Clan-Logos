@@ -10,6 +10,10 @@
 *.userosscache
 *.sln.docstates
 
+# Release Files
+
+Retouched-MT1-Clan-Logos/*
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

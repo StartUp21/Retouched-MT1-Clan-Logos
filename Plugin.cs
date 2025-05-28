@@ -17,7 +17,7 @@ namespace Retouched_MT1_Clan_Logos
 
 		public const string PLUGIN_NAME = "RetouchedMT1ClanLogos.Plugin";
 
-		public const string PLUGIN_VERSION = "0.0.1";
+		public const string PLUGIN_VERSION = "1.0.0";
 	}
 	[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 	public class Plugin : BaseUnityPlugin
