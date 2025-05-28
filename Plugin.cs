@@ -35,7 +35,7 @@ namespace Retouched_MT1_Clan_Logos
 					var iconDictGUIDLookup = iconDict;
 					foreach (var classData in balanceData.GetClassDatas())
 					{
-						if (iconDictGUIDLookup.TryGetValue(classData.GetID(), out var icon))
+						if (iconDictGUIDLookup.TryGetValue(classData.name, out var icon))
 							iconsField.SetValue(classData, icon);
 					}
 				}
@@ -52,14 +52,14 @@ namespace Retouched_MT1_Clan_Logos
 			Dictionary<string, object> iconDict = new Dictionary<string, object>();
 			var iconSetType = AccessTools.Inner(typeof(ClassData), "IconSet");
 			var iconSetTypeFields = resources.ToDictionary(key => key, value => AccessTools.Field(iconSetType, value));
-			var textures = LoadTextures();
+			var textures = LoadIconTextures();
 			var classes = new (ClassCardStyle name, string guid)[]
 			{
-				(ClassCardStyle.Hellhorned, "c595c344-d323-4cf1-9ad6-41edc2aebbd0"),
-				(ClassCardStyle.Awoken		, "fd119fcf-c2cf-469e-8a5a-e9b0f265560d"),
-				(ClassCardStyle.Remnant   , "4fe56363-b1d9-46b7-9a09-bd2df1a5329f"),
-				(ClassCardStyle.Stygian   , "9317cf9a-04ec-49da-be29-0e4ed61eb8ba"),
-				(ClassCardStyle.Umbra     , "fda62ada-520e-42f3-aa88-e4a78549c4a2")
+				(ClassCardStyle.Hellhorned, "ClassHellhorned"),	//"c595c344-d323-4cf1-9ad6-41edc2aebbd0"),
+				(ClassCardStyle.Awoken		, "ClassAwoken"),			//"fd119fcf-c2cf-469e-8a5a-e9b0f265560d"),
+				(ClassCardStyle.Remnant   , "ClassRemnant"),		//"4fe56363-b1d9-46b7-9a09-bd2df1a5329f"),
+				(ClassCardStyle.Stygian   , "ClassStygian"),		//"9317cf9a-04ec-49da-be29-0e4ed61eb8ba"),
+				(ClassCardStyle.Umbra     , "ClassUmbra")				//"fda62ada-520e-42f3-aa88-e4a78549c4a2")
 			};
 			for (int c = 0; c < classes.Length; c++)
 			{
@@ -92,7 +92,7 @@ namespace Retouched_MT1_Clan_Logos
 			return iconDict;
 		}
 
-		private Dictionary<string, Texture2D> LoadTextures()
+		private Dictionary<string, Texture2D> LoadIconTextures()
 		{
 			Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 			for (int i = 0; i < resources.Length; i++)
