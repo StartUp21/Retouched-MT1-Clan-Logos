@@ -6,9 +6,9 @@ Rest assured, I didn't just pull these logos out of my ass. They're based on the
 Currently, the new logos should apply to everywhere but the unit banners on the OVERWORLD map during a run.
 
 ## Credits
-Coding: StartUp21
+Coding: StartUp21 \
 Logo Art: Macrosis2020
 
 ## Patch Notes
-1.0: Released
+1.0: Released \
 (If things go well, I'll attempt to edit the new logos into the unit banners as well. This will take some time.)
