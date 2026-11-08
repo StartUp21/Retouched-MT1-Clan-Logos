@@ -25,18 +25,27 @@ namespace Retouched_MT1_Clan_Logos
 		internal readonly string[] resources = { "small", "medium", "large", "silhouette" };
 		private void Awake()
 		{
-			Dictionary<string, object> iconDict = GetIcons();
+			// Dictionary<string, object> iconDict = GetIcons();
 			Railend.ConfigurePostAction(c =>
 			{
 				if (c.GetInstance<GameDataClient>().TryGetProvider<SaveManager>(out var saveManager))
 				{
+					// var balanceData = saveManager.GetAllGameData().GetBalanceData();
+					// var iconsField = AccessTools.Field(typeof(ClassData), "icons");
+					// var iconDictGUIDLookup = iconDict;
+					// foreach (var classData in balanceData.GetClassDatas())
+					// {
+					// 	if (iconDictGUIDLookup.TryGetValue(classData.name, out var icon))
+					// 		iconsField.SetValue(classData, icon);
+					// }
 					var balanceData = saveManager.GetAllGameData().GetBalanceData();
 					var iconsField = AccessTools.Field(typeof(ClassData), "icons");
-					var iconDictGUIDLookup = iconDict;
 					foreach (var classData in balanceData.GetClassDatas())
 					{
-						if (iconDictGUIDLookup.TryGetValue(classData.name, out var icon))
-							iconsField.SetValue(classData, icon);
+						var icon = GetIcon(classData);
+						if (icon == null)
+							continue;
+						iconsField.SetValue(classData, icon);
 					}
 				}
 				else
@@ -46,7 +55,53 @@ namespace Retouched_MT1_Clan_Logos
 			});
 			Logger.LogInfo("Plugin RetouchedMT1ClanLogos.Plugin is loaded!");
 		}
-
+		private Dictionary<string, Texture2D>? _iconTextures;
+		private object? GetIcon(ClassData classData)
+		{
+			var style = classData.GetCardStyle();
+			switch (style)
+			{
+				case ClassCardStyle.Hellhorned:
+				case ClassCardStyle.Awoken:
+				case ClassCardStyle.Stygian:
+				case ClassCardStyle.Umbra:
+				case ClassCardStyle.Remnant:
+				case ClassCardStyle.Wurmkin:
+					break;
+				default:
+					return null;
+			}
+			_iconTextures ??= LoadIconTextures();
+			var iconsField = AccessTools.Field(typeof(ClassData), "icons");
+			var currentIcons = iconsField.GetValue(classData);
+			var iconSetType = AccessTools.Inner(typeof(ClassData), "IconSet");
+			var iconSetTypeFields = resources.ToDictionary(key => key, value => AccessTools.Field(iconSetType, value));
+			object icon = Activator.CreateInstance(iconSetType);
+			foreach (var field in iconSetTypeFields)
+			{
+				if (field.Value.GetValue(currentIcons) is Sprite old
+					&& _iconTextures.TryGetValue(field.Key, out var texture2D))
+				{
+					try
+					{
+						var iconSprite = Sprite.Create(texture2D, old.rect, new Vector2(0.5f, 0.5f));
+						iconSprite.name = $"Retouched {style} {field.Key}";
+						field.Value.SetValue(icon, iconSprite);
+					}
+					catch (Exception e)
+					{
+						Logger.LogError($"Failed to create icon for [{style}: {field.Key}]");
+						Logger.LogError(e);
+					}
+				}
+				else
+				{
+					Logger.LogError($"Failed to get texture for [{style}: {field.Key}]");
+				}
+			}
+			return icon;
+		}
+		[Obsolete]
 		private Dictionary<string, object> GetIcons()
 		{
 			Dictionary<string, object> iconDict = new Dictionary<string, object>();
