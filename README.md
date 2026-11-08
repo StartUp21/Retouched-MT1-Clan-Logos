@@ -10,6 +10,7 @@ Coding: StartUp21 \
 Logo Art: Macrosis2020
 
 ## Patch Notes
+1.0.2: Fixed an issue with icon rendering \
 1.0.1: Added Wurmkin Icon \
 1.0.0: Released \
 (If things go well, I'll attempt to edit the new logos into the unit banners as well. This will take some time.)
